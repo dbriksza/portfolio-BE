@@ -46,4 +46,8 @@ server.post("/send", (req, res) => {
   });
 });
 
+server.get("/resume", (req, res) => {
+  res.download("./Resume.pdf");
+});
+
 module.exports = server;
