@@ -7,7 +7,10 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const server = express();
 
+const cors = require("cors");
+
 server.use(bodyParser.json());
+server.use(cors());
 
 server.post("/send", (req, res) => {
   const transporter = nodemailer.createTransport({
