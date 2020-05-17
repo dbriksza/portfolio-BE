@@ -12,6 +12,10 @@ const cors = require("cors");
 server.use(bodyParser.json());
 server.use(cors());
 
+server.get("/", (req, res) => {
+  res.status(200).json("seems to be working");
+});
+
 server.post("/send", (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
