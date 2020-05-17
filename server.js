@@ -17,8 +17,8 @@ server.post("/send", (req, res) => {
     service: "gmail",
     auth: {
       user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD
-    }
+      pass: process.env.EMAIL_PASSWORD,
+    },
   });
 
   const mailOptions = {
@@ -30,12 +30,29 @@ server.post("/send", (req, res) => {
       {
         filename: "Resume.pdf",
         path: "./Resume.pdf",
-        contentType: "application/pdf"
-      }
-    ]
+        contentType: "application/pdf",
+      },
+    ],
   };
 
-  transporter.sendMail(mailOptions, function(error, info) {
+  const notifEmail = {
+    from: process.env.EMAIL_USERNAME,
+    to: "dbriksza@gmail.com",
+    subject: `Resume Request from ${req.body.email}`,
+    text: `A request for your resume was made by: ${req.body.email}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.status(500).json(error);
+      console.log(error);
+    } else {
+      res.status(200).json(info.response);
+      console.log("Email sent: " + info.response);
+    }
+  });
+
+  transporter.sendMail(notifEmail, function (error, info) {
     if (error) {
       res.status(500).json(error);
       console.log(error);
